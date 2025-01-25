@@ -7,7 +7,7 @@ const userSchema = new Schema(
     name : {type:String , unique : true}, 
     email : {type:String , unique : true}, 
     password:String,
-    role : {type: String , enm : ['admin' , 'customer'] , default: 'customer'}
+    role : {type: String , enm : ['admin' , 'customer'] , default: 'Patient'}
     }
     )
     userSchema.methods.comparePasswords = async function (password)

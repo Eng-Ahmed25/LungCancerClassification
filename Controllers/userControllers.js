@@ -1,7 +1,9 @@
 const userModel = require('../Models/user.schema'); 
+const imageModel = require('../Models/images.schema'); 
 const bcrypt = require('bcrypt')
 const jwtT = require('../middleware/jwt')
- 
+const multer = require('multer');
+const fs = require('fs');
 exports.signup = async (req, res) =>
 {
     try
@@ -40,20 +42,21 @@ exports.login = async (req , res) =>
 {
     try 
     {
-        let user = await userModel.findOne({email : req.body.email}) ; 
+        let user = await userModel.findOne({name : req.body.name}) ; 
         if(!user)
         {
-            res.status(401).json({message : "Invalid Email or Password"})
+            return  res.status(401).json({message : "Invalid name or Password"})
         }
+
         let passworCheck =  await user.comparePasswords(req.body.password) 
         if(passworCheck === false)  
         {
-            res.status(403).json({message : "Invalid Email or Password"})
+            return res.status(403).json({message : "Invalid name or Password"})
             
         }
         const token = await jwtT.generatToken(user)
         console.log(token)
-        res.status(200).json({message:"User Login in " , user: {name:user.name , email: user.email , token : token}})
+        return res.status(200).json({message:"User Login in " , user: {id : user.id , name:user.name , email: user.email , token : token}})
 
 
     } 
@@ -82,4 +85,71 @@ exports.getAllusers = async (req , res) =>
         }
     
     }
+    exports.logout = async (req , res) => 
+    {
+        try 
+        {
+            
+            await userModel.findByIdAndDelete({_id:req.params.id})
+            await imageModel.findOneAndDelete({userId:req.params.userId});
+
+            res.json({message:"User Logout Successfully "})
+        }
+        catch(err)
+        {
+    
+            console.log(err.message)
+            res.status(500).json({message: "Internl server erro"}); 
+    
+        }
+    };
+    const storage = multer.memoryStorage(); // Store files in memory
+    const upload = multer({ storage });
+
  
+exports.upload = async (req, res) => {
+  // The middleware 'upload.single()' must be used separately
+  upload.single('file')(req, res, async (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error handling file upload');
+    }
+
+    try {
+      if (!req.file) {
+        return res.status(400).send('No file uploaded');
+      }
+
+      const _id = req.userID;
+
+      // Check if an image already exists for the user
+      const existingImage = await imageModel.findOne({ _id: _id });
+
+      if (existingImage) {
+        // If image exists, update it
+        existingImage.name = req.file.originalname;
+        existingImage.data = req.file.buffer;
+        existingImage.contentType = req.file.mimetype;
+
+        await existingImage.save();
+        return res.status(200).send('Image updated successfully');
+      } else {
+        // If image doesn't exist, create a new one
+        const newImage = new imageModel({
+          _id: _id,
+          name: req.file.originalname,
+          data: req.file.buffer,
+          contentType: req.file.mimetype,
+        });
+
+        await newImage.save();
+        return res.status(200).send('Image uploaded and saved to database');
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  });
+};
+ 
+    

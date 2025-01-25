@@ -11,6 +11,8 @@ module.exports = (req , res , next) =>
         }
         const deadToken = jwt.verify(token , 'secret')
         req.user = deadToken 
+        req.userID = deadToken.id; // Assuming the user ID is in the token
+
         next()
     }
 catch(err)

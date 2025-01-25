@@ -6,7 +6,11 @@ const authntication = require("../middleware/jwtVerify")
 
 router.post('/api/signup' ,userController.signup)
 router.post('/api/login' ,userController.login)
-router.get('/api/users' , authntication , userController.getAllusers) 
+router.post('/api/upload' , authntication ,  userController.upload)
+router.get('/api/users', authntication , userController.getAllusers) 
+router.delete('/api/logout/:id',   userController.logout)
+
+
  // get all users
 // router.get('/api/users/:id' , authntication , controllerBooks.getOneBook)
 // router.delete('/api/users/delete:id' , authntication , controllerBooks.deleteBook)  
