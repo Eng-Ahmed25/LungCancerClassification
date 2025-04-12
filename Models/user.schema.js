@@ -7,7 +7,7 @@ const userSchema = new Schema(
     name : {type:String , unique : true}, 
     email : {type:String , unique : true}, 
     password:String,
-    role : {type: String , enm : ['admin' , 'customer'] , default: 'Patient'}
+    role : {type: String , enm : ['Doctor' , 'Patient'] , default: 'Patient'}
     }
     )
     userSchema.methods.comparePasswords = async function (password)
@@ -15,4 +15,4 @@ const userSchema = new Schema(
     return await bcrypt.compare(password , this.password)
     }
  
-module.exports =  mongoose.model('User' , userSchema)
+module.exports =  mongoose.model('User' , userSchema)   

@@ -7,6 +7,8 @@ const authntication = require("../middleware/jwtVerify")
 router.post('/api/signup' ,userController.signup)
 router.post('/api/login' ,userController.login)
 router.post('/api/upload' , authntication ,  userController.upload)
+router.post('/api/colne/upload' , authntication ,  userController.uploadColne)
+router.post('/api/ct/upload', authntication ,   userController.uploadCt)
 router.get('/api/users', authntication , userController.getAllusers) 
 router.delete('/api/logout/:id',   userController.logout)
 

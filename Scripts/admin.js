@@ -5,14 +5,14 @@ const createaAdmin = async () =>
 {
     try
     {
-        const findAdmin = await userModel.findOne({email: "AdminBrand55@gmail.com"})
+        const findAdmin = await userModel.findOne({email: "Doctor@gmail.com"})
         if(!findAdmin)
         {
             const Admin = new userModel({
-                name: "Admin" , 
-                email : "AdminBrand55@gmail.com" , 
+                name: "Doctor" , 
+                email : "Doctor@gmail.com" , 
                 password: await bcrypt.hash("123456789", 10) , 
-                role : 'admin'
+                role : 'Doctor'
             })  
             await Admin.save()
         }

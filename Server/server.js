@@ -19,7 +19,7 @@ app.use('/' , userRoutes)
  
 createAdmin()
 
-app.listen(port , ()=> {
+app.listen(port , '0.0.0.0',()=> {
 
     console.log(`ServerConnected on ${port}`)
     
