@@ -142,7 +142,7 @@ exports.getAllusers = async (req , res) =>
           });
     
           // Send the image to the FastAPI endpoint for prediction
-          const fastApiUrl = 'http://127.0.0.1:8005/predict';
+          const fastApiUrl = 'https://lungcancermodel-production.up.railway.app/predict/';
           const predictionResponse = await axios.post(fastApiUrl, formData, {
             headers: {
               ...formData.getHeaders(),
