@@ -216,7 +216,7 @@ exports.getAllusers = async (req , res) =>
           });
     
           // Send the image to the FastAPI endpoint for prediction
-          const fastApiUrl = 'https://ai-colone-production.up.railway.app/predict/';
+          const fastApiUrl = 'https://ai-colon-production.up.railway.app/predict/';
           const predictionResponse = await axios.post(fastApiUrl, formData, {
             headers: {
               ...formData.getHeaders(),
