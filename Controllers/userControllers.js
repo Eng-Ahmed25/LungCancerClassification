@@ -290,7 +290,7 @@ exports.getAllusers = async (req , res) =>
             filename: req.file.originalname,
             contentType: req.file.mimetype,
           });
-    
+    ctcancermodel-production.up.railway.app
           // Send the image to the FastAPI endpoint for prediction
           const fastApiUrl = 'https://ctcancermodel-production.up.railway.app/predict/';
           const predictionResponse = await axios.post(fastApiUrl, formData, {
